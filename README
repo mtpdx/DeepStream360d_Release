@@ -1,0 +1,76 @@
+*****************************************************************************
+* Copyright (c) 2018 NVIDIA Corporation.  All rights reserved.
+*
+* NVIDIA Corporation and its licensors retain all intellectual property
+* and proprietary rights in and to this software, related documentation
+* and any modifications thereto.  Any use, reproduction, disclosure or
+* distribution of this software and related documentation without an express
+* license agreement from NVIDIA Corporation is strictly prohibited.
+*****************************************************************************
+
+===============================================================================
+                         DeepStream 360d README
+===============================================================================
+
+Setup pre-requisites:
+- DeepStream SDK 3.0 (Tesla)
+
+--------------------------------------------------------------------------------
+Package Contents
+--------------------------------------------------------------------------------
+The DeepStream-360d packages include:
+1. binaries360d.tbz2 - Core binaries
+2. sources - Sources for sample application
+3. samples - Config files, Models, streams and tools to run the sample app
+
+--------------------------------------------------------------------------------
+Extract and Install DeepStream-360d Application
+--------------------------------------------------------------------------------
+1. This package will have binaries360d.tbz2, samples and sources directory.
+2. Untar binaries360d.tbz2
+    sudo tar -xvf binaries360d.tbz2 -C /
+
+------------------------------------------------------------------------------
+Deepstream-360d-app native compilation steps.
+------------------------------------------------------------------------------
+You must have the following development packages installed
+
+    GStreamer-1.0
+    GStreamer-1.0 Base Plugins
+    GStreamer-1.0 gstrtspserver
+
+1. To install these packages, execute the following command:
+   sudo apt-get install libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+   libgstrtspserver-1.0-dev
+
+2. Copy sources directories of DS360d-app to Deepstream SDK directory.
+    cd <path to DS SDK directory>
+    cp -r <path to DS 360d app directory>/DeepStream360d_Release/sources .
+    cp -r <path to DS 360d app directory>/DeepStream360d_Release/samples .
+
+3. Build the sources by executing the command:
+   cd sources/apps/usecase_apps/deepstream-360d-app
+   make
+
+4. Run the application by executing the command:
+   ./deepstream-360d-app -c <config-file>
+
+Please refer "../../apps-common/includes/deepstream_config.h" to modify
+application parameters like maximum number of sources etc.
+
+--------------------------------------------------------------------------------
+Running the 360d application
+--------------------------------------------------------------------------------
+1. Go to samples directory and run
+   deepstream-360d-app -c <path to 360d config.txt>
+2. Application config files included in `configs/deepstream-360d-app/`
+   a. source10_gpu0.txt (10 local file sources on gpu0)
+   b. source2_file.txt (2 local file sources)
+   c. source9_gpu1.txt (9 local file sources on gpu1)
+3. Other configuration files
+   a. config_infer_primary.txt (Primary Object Detector for the 360d sample)
+   b. nvaisle_2M.csv (Camera calibration, dewarping parameters, ROI, etc for Aisle Views for the sample streams)
+   c. nvspot_2M.csv (Camera calibration, dewarping parameters, etc for Parking Spot Views for the sample streams)
+4. Using Kafka broker to send message to cloud.
+   Modify "broker-conn-str" field under "message-broker" group and replace its value with
+   connection string of your backend server.
